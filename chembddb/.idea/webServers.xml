@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="1c7dc797-5bdf-4d1c-9b5a-feeecfbdd1e7" name="chembddb" url="http://rush.ccr.buffalo.edu">
+        <fileTransfer host="rush.ccr.buffalo.edu" port="22" rootFolder="/projects/academic/hachmann/shirish/python/mysite" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

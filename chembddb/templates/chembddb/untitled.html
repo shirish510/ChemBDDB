@@ -1,0 +1,47 @@
+{% if user.is_authenticated %}
+	Hello, {{ user.username }}!!
+	&nbsp; &nbsp;
+	<a href="/chembddb/logout">Logout</a> 
+	&nbsp; &nbsp;
+	<a href="/chembddb">Home</a> 
+<form action="{% url 'chembddb:reviewrequest' %}" method="post">
+{% csrf_token %}
+
+{% if info_list %}
+
+<hr>
+	<tr>
+		<th></th>
+		<th> Name </th>
+		<th> SMILES </th>
+		<th> Property </th>
+		<th> Value </th>
+		<th> METHOD </th>
+		<th> USER </th>
+	</tr>
+	{% load index %}
+	{% for info_str in info_list %}
+	{% data=info_str.split(";") %}
+	{% for i in data}
+	<tr>
+		<td></td>
+			 <td> {{i}} </td>
+	{% endfor %}
+	</tr>
+	{% endfor %}
+	{% endif %}
+</table>
+{% endfor %}
+
+<input type="submit" name="approve" value="Approve Selected Requests">
+<input type="submit" name="reject" value="Reject Selected Requests">
+{% else %}
+<h3> No requests pending for approval </h3>
+{% endif %}
+</form>
+{% else %}
+<a href="/chembddb/login">Login</a> &nbsp; &nbsp;  <!-- &nbsp is used for spacing -->
+<!-- <a href="/chembddb/register">Register</a> -->
+<h3>Login as admin before reviewing requests</h4>
+{% endif %}
+

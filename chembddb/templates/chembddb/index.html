@@ -1,0 +1,573 @@
+<!DOCTYPE HTML>
+<title>ChemBDDB - Home</title>
+<head>
+<style>
+
+div.container {
+    height: auto;
+    width: 100%;
+    border: 1px solid gray;
+    margin: -20px 0 0 0;
+
+        /*The  image used for background page*/
+    {#background-image: url("/static/images/body_page.png");#}
+        /*height: 130%;          !*Full height *!*/
+
+        /*Center and scale the image*/
+    {#background-position: bottom;#}
+    {#background-repeat: repeat;#}
+    {#background-size: 50% 50%;#}
+
+    background-color: white;
+    font-family: Garamond;
+    font-size: 20px;
+    {#min-width: 960px;#}
+    }
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+{% load static %}
+
+.search {
+    width: 100%;
+    text-align: left;
+}
+
+.searchTerm {
+    float: left;
+    width: 70%;
+    border: 3px solid #00B4CC;
+    padding: 5px;
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    color: #9DBFAF;
+}
+.searchTerm_left:focus{
+    color:#00B4CC;
+}
+
+.searchTerm_left {
+    float: left;
+    width: 70%;
+    border: 3px solid #00B4CC;
+    padding: 5px;
+    height: 36px;
+    border-radius: 5px;
+    outline: none;
+    color: #9DBFAF;
+}
+.searchTerm_right {
+    float: left;
+    width: 70%;
+    border: 3px solid #00B4CC;
+    padding: 5px;
+    height: 36px;
+    border-radius: 5px;
+    outline: none;
+    color: #9DBFAF;
+}
+
+.searchButton {
+    float: left;
+    margin-left: 20px;
+    width: 80px;
+    height: 37px;
+    border: 1px solid #00B4CC;
+    background-color: royalblue;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/*Resize the wrap to see the search bar size change */
+.wrap{
+    width: 60%;
+    position: absolute;
+    top: 40%;
+    left:20%;
+    margin-right: 50px;
+    transform: translate(-50%, -50%);
+}
+
+.search_box {
+    padding: 40px;
+    background: linear-gradient(to bottom right, blanchedalmond, blanchedalmond);
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+header, footer {
+	padding:1em;
+    margin-left: -15px;
+    margin-right: -15px;
+	color:white;
+	background: linear-gradient(to bottom right, mediumseagreen, mediumseagreen);
+    clear:right;
+    border: 0;
+	text-align:center;
+    font-family: Garamond;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+h1{
+    text-align:left;
+    align-content: center;
+}
+
+article {
+	margin-left: 120px;
+    margin-right: 120px;
+	/*border-left: 1px solid gray;*/
+	padding:1em;
+    color: black;
+    text-align: -moz-left;
+    {#font-size:15px;#}
+	overflow:hidden;
+    position: -ms-device-fixed;
+    font-size: x-large;
+}
+.table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    border: 3px solid black;
+}
+
+.tr:nth-child(even){
+    background-color: #dddddd;
+    text-align: left;
+    padding: 10px;
+    width: 130px;
+}
+
+.td,.th {
+    border: 3px solid black;
+    /*background-color: lawngreen;*/
+    margin-right: 5px;
+    text-align: left;
+    padding: 10px;
+}
+
+.btn btn-primary{
+    text-decoration: none;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: -ms-device-fixed; /* based on the device dimension */
+    {#z-index: 1; /* Sit on top */#}
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    {#width: 100%; /* Full width */#}
+    {#height: 100%; /* Full height */#}
+    overflow: hidden; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+}
+
+.hover_tool {
+    position: relative;
+    display: inline-block;
+    {#border-bottom: 1px dotted black;#}
+}
+
+.hover_tool .hover_tooltip {
+    visibility: hidden;
+    width: 250px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.hover_tool:hover .hover_tooltip {
+    visibility: visible;
+}
+
+
+</style>
+{% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="RapidWeaver" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+        var selectFunction = function() {
+            document.getElementByName("{{prop.prop}}_unit").value = "default";
+        };
+</script>
+
+{#google.charts.setOnLoadCallback(drawChart);#}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    {% load my_tags %}
+    google.charts.load('current', {packages:['corechart']}).then( function(){
+        $(".btn_clk").click(function(){
+            var X1 = [];
+            var Y1 = [];
+            var X3 = document.getElementById('x_axis');
+            var X2 = X3[X3.selectedIndex].value;
+            var Y3 = document.getElementById('y_axis');
+            var Y2 = Y3[Y3.selectedIndex].value;
+            var ha = "";
+            var va = "";
+            var horunit = "";
+            var verunit = "";
+            {% for prop in property_list %}      {# This is to find the property name on X-axis and Y-axis #}
+                if({{ forloop.counter }} == X2)
+                {
+                    ha += '{{prop.prop}}';
+                    horunit+= '{{prop.unit}}';
+                }
+                if({{ forloop.counter }} == Y2)
+                {
+                    va += '{{prop.prop}}';
+                    verunit += '{{prop.unit}}';
+                }
+            {% endfor %}
+            {#window.alert(ha);#}                   {# This is to the display the X-axis and Y-axis in alert window #}
+            {#window.alert(va);#}
+
+            {% for com in comp %}
+                if({{ forloop.counter }} % 4 == X2)     {# This is for adding a particular property list into X-axis values #}
+                {
+                    X1.push([{{ com }}]);
+                }
+                else if({{ forloop.counter }} % 4 == Y2)        {# This is for adding a particular property list into Y-axis values #}
+                {
+                    Y1.push([{{ com }}]);
+                }
+                else if ({{ forloop.counter }} % 4 == 0)            {# This is for adding the fourth property list into X and Y-axis #}
+                {
+                    if(X2 == 4)
+                    {
+                        X1.push([{{ com }}]);
+                    }
+                    if(Y2 == 4)
+                    {
+                        Y1.push([{{ com }}]);
+                    }
+                }
+            {% endfor %}
+{##}
+{#            for(var i=0; i<X1.length; i++) {#}
+{#                document.write(X1[i] + '\n');#}
+{##}
+{#            }#}
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', ha);
+            data.addColumn('number', va);
+
+            for(var i=0; i<20; i++){
+                {#var row = [X1[i], Y1[i]];#}
+                var a = parseFloat((X1[i]));
+                var b = parseFloat((Y1[i]));
+                data.addRows([[a, b]]);
+            }
+
+            {# This is used for adding units and to ensure the units are not empty #}
+            if(horunit !== "")
+            {
+                ha = ha + ' (' + horunit + ')'
+            }
+            if(verunit !== "")
+            {
+                va = va + ' (' + verunit + ')'
+            }
+
+            var options = {
+                title: 'Graphical representation of High Refractive Index Polymers',
+                hAxis: {
+                    title: ha
+                },
+                vAxis: {
+                    title: va
+                },
+
+                animation: {
+                    duration: 1000,
+                    easing: 'linear'
+                },
+                width: 900,
+                height: 500,
+                trendlines: {
+                      0: {type: 'linear', color: '#007329', opacity: 1}
+
+                    },
+
+                curveType: 'function',
+                legend: 'none'
+            };
+
+            var chart = new google.visualization.ScatterChart(document.getElementById('line_chart'));
+
+            chart.draw(data,options);
+
+        });
+    });
+
+</script>
+</head>
+
+{% block content %}
+<body style="topmargin=0;bottommargin=0;leftmargin=0;rightmargin=0;">
+<div class="container">
+<header>
+    <h1>
+        <text style="text-shadow: 2px 2px 5px black">
+            <font size="9"><a href="/chembddb" style="color:white; text-decoration: none">CHEMBDDB <sup><font size="2">1.3</font></sup></a>
+                <text style="text-align: right; float:right; margin-right:80px">
+        {% if user.is_authenticated %}
+            <text style="color:white;font-size:20px; margin-left:300px;"><strong>Welcome, {{ user.username }}&nbsp;</strong>&nbsp;&nbsp;
+            {% if user.is_superuser %}
+                <a href="/chembddb/reviewrequest" style="color:white; text-decoration:none;">Review Pending Requests</a>&nbsp;&nbsp;
+            {% endif %}
+            <a href="/chembddb/submitrequest" style="color:white; text-decoration:none;">Submit Molecule</a>&nbsp;&nbsp;
+            <a href="/chembddb/logout" style="color:white; text-decoration:none;">Logout</a>&nbsp;
+            </text>
+        {% else %}
+            <text style="color:white;font-size:25px;word-spacing:50px;margin-left:550px"><a href="/chembddb/login" style="color:white; text-decoration:none">Login</a>
+            <a href="/chembddb/register" style="color:white; text-decoration: none">Register</a></text>&nbsp;
+        {% endif %}
+                </text>
+        </font>
+            <br>
+        <font size="3" style="position: absolute;"> A computational chemistry database </font><br>
+        </text>
+    </h1>
+</header>
+
+<!-- this is the content place after header and borders -->
+
+    <br>
+<article>
+    <font size="4">
+    <div class="search_box">
+    <div id="search_values" class="modal-content">
+    <h4><b><font size="5">Match any SMILES String/Compound Name of a molecule.</font></b></h4>
+    <form action="{% url 'chembddb:index' %}" method="post">
+        {% csrf_token %}
+        {% load index %}
+       <!--<textarea name="queried_text" rows="1" cols="50">{{ query_text }}</textarea>--> <!-- here queried text is key and value is query text in the dictionary POST-->
+      <!--<div class="wrap">-->
+        <p>
+        <div class="search">
+            <input type="text" name ="queried_text" class="searchTerm" placeholder="SMILES Keywords" style="color:black">&nbsp;
+        <button type="submit" class="btn btn-primary"><a href="?page=1"><font style="color:white; font-size: 1.3em; text-decoration: none;">Search</font></a></button>
+        </div>
+      <!--</div>-->
+        <br>
+     <!--<button type="submit" class="btn btn-primary">Search &nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span> </button>-->
+        <label class ="radio-inline"><input checked="checked" type="radio" name="verified" value="1" margin-left="130px">Check Verified Data</label>
+  &nbsp;&nbsp;    <label class="radio-inline " ><input type="radio" name="verified" value = "0" margin-left="130px">Check all Data</label>
+        </p>
+    </form>
+
+    <br>
+    <h4><b><font size="5">Advanced search based on properties</font></b></h4>
+        <form name="property" action="{% url 'chembddb:index' %}" method="post">
+            {% csrf_token %}
+            {% load index %}
+                <table border="0" style="align-content: center">
+                <col width="240">
+                <col width="240">
+                <col width="240">
+                {% for prop in property_list %}
+                <tr style="height: 60px; align-content: center">
+                    {% if forloop.counter == 1 %}
+                        <td><input id="{{prop.prop}}" type="checkbox" name="{{prop.prop}}" value="{{prop.id}}">&nbsp;&nbsp;{{ prop.prop }}
+                            <div class="hover_tool"><img src="/static/web_images/blue_icon.png"; alt="blue_question"; style="width:20px ;height:20px">
+                                <span class="hover_tooltip">Calculated using DFT (PBE0/def2-DZVP-D3)</span>
+                            </div>
+                        </td>&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% elif forloop.counter == 2 %}
+                        <td><input id="{{prop.prop}}" type="checkbox" name="{{prop.prop}}" value="{{prop.id}}">&nbsp;&nbsp;{{ prop.prop }}
+                            <div class="hover_tool"><img src="/static/web_images/blue_icon.png"; alt="blue_question"; style="width:20px ;height:20px">
+                                <span class="hover_tooltip">Calculated using MD</span>
+                            </div>
+                        </td>&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% elif forloop.counter == 3 %}
+                        <td><input id="{{prop.prop}}" type="checkbox" name="{{prop.prop}}" value="{{prop.id}}">&nbsp;&nbsp;{{ prop.prop }}
+                            <div class="hover_tool"><img src="/static/web_images/blue_icon.png"; alt="blue_question"; style="width:20px ;height:20px">
+                                <span class="hover_tooltip">Calculated using number density computed from van der Waals volume and a constant packing factor (Kp) = 0.75</span>
+                            </div>
+                        </td>&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% elif forloop.counter == 4 %}
+                        <td><input id="{{prop.prop}}" type="checkbox" name="{{prop.prop}}" value="{{prop.id}}">&nbsp;&nbsp;{{ prop.prop }}
+                            <div class="hover_tool"><img src="/static/web_images/blue_icon.png"; alt="blue_question"; style="width:20px ;height:20px">
+                                <span class="hover_tooltip">Calculated using number density computed from MD</span>
+                            </div>
+                        </td>&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% endif %}
+                    <td><input type="text" name="{{prop.prop}}_from_val" class="searchTerm_left" placeholder="Min" style="resize:none; color: black">{{ from_field|index:forloop.counter0 }} &nbsp; &nbsp;</td>
+                    <td><input type="text" name="{{prop.prop}}_to_val" class="searchTerm_right" placeholder="Max" style="resize:none; color: black">{{ to_field|index:forloop.counter0 }} </td>
+                        <td>
+                            <div class="dropdown">
+{#                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ prop.unit }}<span class="caret"></span></button>#}
+{#                            <ul class="dropdown-menu">#}
+                                {% if prop.unit == "Bohr" %}
+                                    <select name="{{prop.prop}}_unit" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">{{ prop.unit }}<span class="caret"></span>
+                                    <ul class="dropdown-menu">
+                                        <option value="default"><font size="5"> Bohr &sup3; / au &sup3; (Vol)</font></option>
+                                        <option value="coulomb">x10&#8315;&#8313;  C&sup2;m&sup2;J&#8315;&sup1;</option>
+                                        <option value="cubiccm">X10&#8315;&sup2;&#8308;  cm&sup3; (Vol)</option>
+                                    </ul>
+                                    <input type="hidden" value="CHANGE" onclick="selectFunction()">
+                                </select>
+                                {% elif prop.unit == "kg/m3" %}
+                                    <select name="{{prop.prop}}_unit" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">{{ prop.unit }}<span class="caret"></span>
+                                    <ul class="dropdown-menu">
+                                        <option value = "default"><font size="5"> kg m&#8315;&#179; </font></option>
+                                        <option value="g/cm3"> g cm&#8315;&sup3; </option>
+{#                                    <option value="electrovolt"> eV </option>#}
+                                    </ul>
+                                     <input type="hidden" value="CHANGE" onclick="selectFunction()">  <!-- To set it back to default -->
+                                    </select>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </table>
+            <br>
+            <p>
+                <button type="submit" class="btn btn-primary"><a href="?page=1"><font style="color:white; font-size:1.3em; text-decoration: none;">Search  </font></a><span class="glyphicon glyphicon-search"></span> </button>&nbsp;&nbsp;
+                <label class ="radio-inline"><input checked="checked" type="radio" name="verified" value="1">Check Verified Data</label>
+                <label class="radio-inline" ><input type="radio" name="verified" value = "0">Check all Data</label>
+            </p>
+        </form>
+    <br>
+    </div>
+
+<!-- this is the displaying the results part -->
+
+{#    <br>#}
+{#    <br>#}
+{#    <br>#}
+{#    {% for mol in compounds %}#}
+{#        {{ mol }} <br>#}
+{#    {% endfor %}#}
+
+    {% if compounds %}
+        <br>
+        <br>
+
+        <b>To plot Charts:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X-axis
+        <select id="x_axis" name="x_axis" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Select a property<span class="caret"></span>
+            <ul class="dropdown-menu">
+                <option value="0">Select a property</option>
+                {% for prop in property_list %}
+                    <option value="{{ prop.id }}">{{ prop.prop }}</option>
+                {% endfor %}
+            </ul>
+        </select>
+        &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        Y-axis
+        <select id="y_axis" name="y_axis" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Select a property<span class="caret"></span>
+            <ul class="dropdown-menu">
+                <option value="0">Select a property</option>
+                {% for prop in property_list %}
+                    <option value="{{ prop.id }}">{{ prop.prop }}</option>
+                {% endfor %}
+            </ul>
+        </select>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <input class="btn_clk" type="button" value="Draw Chart"/>
+        <br>
+        <br>
+            <div id="line_chart" class="modal-content"></div>
+        <br>
+
+{#      <span close="close">&times;</span>#}
+        <br>
+        <div class="modal-content" style="width:100%;overflow: auto;"><font size="3">
+        <table class="table" border="2px solid black" padding="10px">
+            <col width="20">
+            <col width="50">
+            <col width="20">
+            <col width="20">
+            <col width="20">
+            <col width="20">
+            <tr class="tr">
+                <th class="th">Mol. No</th>
+                <th class="th">SMILES (Compounds)</th>
+                <th class="th">Polarizability</th>
+                <th class="th">Density</th>
+                <th class="th">RI(2)</th>
+                <th class="th">RI</th>
+            </tr>
+            {% for compd in compounds %}
+                {% if forloop.counter|modulo:4 == 1 %}
+                    <tr class="tr">
+                          <td class="td">{{ compd.mol_graph.id }}</td>
+                    <td class="td"><a href="{% url 'chembddb:mol_detail' compd.mol_graph.id %}" target="_top">{{ compd.mol_graph.SMILES_str }}</a></td>
+                    <td class="td">{{ compd.value|floatformat:2 }}</td>
+                {% else %}
+                    <td class="td">{{ compd.value|floatformat:2 }}</td>
+                {% endif %}
+                {% if forloop.counter|modulo:4 == 0 %}
+                    </tr>
+
+                {% endif %}
+            {% endfor %}
+        </table>
+            <p style="alignment: center">
+            <div class="pagination">
+                <span class="step-links">
+                    {% if compounds.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ compounds.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ compounds.number }} of {{ compounds.paginator.num_pages }}.
+                    </span>
+
+                    {% if compounds.has_next %}
+                    <a href="?page={{ compounds.next_page_number }}">next</a>
+                    <a href="?page={{ compounds.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+            </p>
+        </font>
+        </div>
+    {% else %}
+        {% if query_text %} <!-- only if a query_text is searched and not found, display the message below -->
+            <p style="color:red;">No compounds are available.</p>
+        {% endif %}
+    {% endif %}
+
+</div>      {# for the search_box #}
+{% endblock %}  {# for the block content #}
+
+
+<!-- Displaying part ends here -->
+</font>
+<br>
+</article>
+
+<footer><font size="3">JSMol@14.25.2  |  MySQL@5.7.11  |  Django@1.10  |   Hachmann_Research_Group@2017   |   Copyright &copy; chembddb.com</font></footer>
+</div>
+</body>

@@ -1,0 +1,410 @@
+<!DOCTYPE HTML>
+<html>
+<title>{{ smiles_str }}</title>
+<head>
+<style>
+div.container {
+    height: auto;
+    width: 100%;
+    border: 1px solid gray;
+    margin: -20px 0 0 0;
+
+    /*The  image used for background page*/
+    {#background-image: url("/static/images/body_page.png");#}
+    /*height: 130%;          !*Full height *!*/
+
+    /*Center and scale the image*/
+    {#background-position: bottom;#}
+    {#background-repeat: repeat;#}
+    {#background-size: 50% 50%;#}
+
+    background-color: white;
+    {#background: linear-gradient(to bottom right, #ebec00, #6da04b);#}
+    font-family: Calibri;
+}
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+{% load static %}
+
+.search_box {
+    padding: 50px;
+    background: linear-gradient(to bottom right, blanchedalmond, blanchedalmond);
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+header, footer {
+	padding:1em;
+    margin-left: -15px;
+    margin-right: -15px;
+	color:white;
+	background: linear-gradient(to bottom right, mediumseagreen, mediumseagreen);
+    clear:right;
+    border: 0;
+	text-align:center;
+    font-family: Garamond;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+h1{
+    text-align:left;
+    align-content: center;
+}
+
+article {
+	margin-left: 100px;
+    margin-right: 100px;
+	/*border-left: 1px solid gray;*/
+	padding:6em;
+    color: black;
+    text-align: -moz-left;
+    {#font-size:15px;#}
+	overflow:hidden;
+}
+
+table {
+    {#font-family: "Lucida Calligraphy";#}
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 1.4em;
+}
+
+tr:nth-child(even){
+    background-color: aquamarine;
+    text-align: center;
+    padding: 10px;
+    width: 180px;
+}
+
+tr {
+    text-align: center;
+    height: 50px;
+}
+
+td,th {
+    border: 2px solid black;
+    /*background-color: lawngreen;*/
+    text-align: center;
+    padding: 20px;
+    width: 180px;
+}
+
+.input_text{
+    width: 50%;
+    border: 3px solid #00B4CC;
+    padding: 5px;
+    height: 36px;
+    border-radius: 5px;
+    outline: none;
+    color: black;
+
+}
+
+.hover_tool {
+    position: relative;
+    display: inline-block;
+    {#border-bottom: 1px dotted black;#}
+}
+
+.hover_tool .hover_tooltip {
+    visibility: hidden;
+    width: 250px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.hover_tool:hover .hover_tooltip {
+    visibility: visible;
+}
+
+
+</style>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="RapidWeaver" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{#    <script src="/static/webchemdoodle/install/uis/jquery-ui-1.11.4.css"></script>#}
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" href="/static/webchemdoodle/install/ChemDoodleWeb.css" type="text/css">
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-4676875-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    <script type="text/javascript" src="{% static "jsmol/JSmol.min.js" %}"></script>
+{#    <script type="text/javascript" src="{% static "jsmol/java/JmolApplet.jar" %}"></script>#}
+    <script type="text/javascript" src="{% static "jsmol/js/JSmolCore.js" %}"></script>
+    <script type="text/javascript" src="{% static "jsmol/js/j2sjmol.js" %}"></script>
+    <script type="text/javascript" src="{% static "jsmol/js/JSmol.js" %}"></script>
+    <script type="text/javascript" src="{% static "jsmol/js/JSmolApplet.js" %}"></script>
+    <script type="text/javascript" src="{% static "jsmol/js/JSmolApi.js" %}"></script>
+    <script type="text/javascript">
+
+        var myInfo1 = {
+        width: 400,
+        height: 400,
+        serverURL: "http://propka.ki.ku.dk/~jhjensen/jsmol/jsmol.php ",
+		use : 'HTML5',
+        j2sPath: "{% static "jsmol/j2s/" %}",
+        console: "jmolApplet0_infodiv",
+        debug: false,
+        addSelectionOptions: false,
+        }
+
+    </script>
+{#    <script type="text/javascript" src="{% static "webchemdoodle/install/ChemDoodleWeb.js" %}"></script>#}
+{#    <script type="text/javascript" src="{% static "webchemdoodle/install/uis/ChemDoodleWeb-uis.js" %}"></script>#}
+    <script type="text/javascript">
+        var myInfo2 = {
+        width: 400,
+        height: 400,
+        serverURL: "http://propka.ki.ku.dk/~jhjensen/jsmol/jsmol.php ",
+		use : 'HTML5',
+        j2sPath: "{% static "jsmol/j2s/" %}",
+        console: "jmolApplet_infodiv",
+        debug: false,
+        addSelectionOptions: false,
+        }
+    </script>
+{#    For modifying units of Polarizability #}
+    <script type="text/javascript">
+        var updateOrder = function(em) {
+            {#var X = document.getElementsByName("{{ elem }}").;#}
+            var Y = document.getElementById("unit");
+            var val = Y[Y.selectedIndex].value;
+            var Z = val*em;
+            document.getElementById("total").value = Z.toFixed(2)
+        };
+    </script>
+{#    For modifying units of Energy #}
+    <script type="text/javascript">
+        var updateOrder1 = function(em) {
+            {#var X = document.getElementsByName("{{ elem }}").;#}
+            var Y = document.getElementById("unit1");
+            var val = Y[Y.selectedIndex].value;
+            var Z = val*em;
+            document.getElementById("total1").value = Z.toFixed(2)
+        };
+    </script>
+
+</head>
+<body style="topmargin=0;bottommargin=0;leftmargin=0;rightmargin=0;">
+<div class="container">
+<header>
+	<h1>
+        <text style="text-shadow: 2px 2px 5px black">
+            <font size="8"><a href="/chembddb" style="color:white; text-decoration: none">CHEMBDDB <sup><font size="1">1.3</font></sup></a>
+                <text style="text-align: left; float:right; margin-right:80px">
+                    <text style="font-size:30px">{{ smiles_str }}</text>
+                </text>
+            </font>
+            <br>
+        <font size="3" style="position: absolute;"> A computational chemistry database </font><br>
+        </text>
+    </h1>
+{#	<h2 align="right" >{{ smiles_str }}</h2>#}
+</header>
+
+<!-- Displaying part for webpage -->
+
+<article>
+
+{% load index %}
+<div class="search_box">
+<table border="1" align="center">
+    <col width="500">
+    <col width="1400">
+    <col width="100">
+    <col width="100">
+    <col width="100">
+    <col width="350">
+    <tr>
+        <th style="text-align:center">Property</th>
+        <th style="text-align:center">Value</th>
+        <th style="text-align:center">Publication</th>
+        <th style="text-align:center">Method</th>
+        <th style="text-align:center">Status</th>
+        <th style="text-align:center">Credits</th>
+    </tr>
+    {% for val in detail_list %}
+    <tr>
+        {% for elem in val %}
+            {% if forloop.counter == 1 %}
+                {% if forloop.parentloop.counter == 1 %}
+                    <td>{{elem}} <div class="hover_tool"><img src="/static/web_images/blue_icon.png"; alt="blue_question"; style="width:20px ;height:20px">
+                        <span class="hover_tooltip">Calculated using DFT (PBE0/def2-DZVP-D3)</span>
+                    </div></td>
+                {% elif forloop.parentloop.counter == 2 %}
+                    <td>{{ elem }} <div class="hover_tool"><img src="/static/web_images/blue_icon.png"; alt="blue_question"; style="width:20px ;height:20px">
+                        <span class="hover_tooltip">Calculated using MD</span>
+                    </div></td>
+                {% elif forloop.parentloop.counter == 3 %}
+                    <td>{{ elem }} <div class="hover_tool"><img src="/static/web_images/blue_icon.png"; alt="blue_question"; style="width:20px ;height:20px">
+                        <span class="hover_tooltip">Calculated using number density computed from van der Waals volume and a constant packing factor (Kp) = 0.75</span>
+                    </div></td>
+                {% elif forloop.parentloop.counter == 4 %}
+                    <td>{{ elem }} <div class="hover_tool"><img src="/static/web_images/blue_icon.png"; alt="blue_question"; style="width:20px ;height:20px">
+                        <span class="hover_tooltip">Calculated using number density computed from MD</span>
+                    </div></td>
+                {% endif %}
+            {% elif forloop.counter == 2 %}
+                {% if forloop.parentloop.counter == 1 %} {# For Polarizability units. Change accordingly for different properties #}
+                    {% if elem == "0.00 " %}
+                        <td> NA </td>
+                    {% else %}
+                        <td>
+                        <input id="total" class="input_text" type="text" name="total" value="{{ elem }}" readonly="readonly" />
+                        <select id="unit" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" onchange="updateOrder({{ elem }});">
+                            <span class="caret"></span>
+                            <ul class="dropdown-menu">
+                                <option value="1">Bohr&sup3;/au&sup3; (vol)</option>
+                                <option value="1.3305">x10&#8315;&#8313;C&sup2;m&sup2;J&#8315;&sup1;</option>
+                                <option value="0.148">x10&#8315;&sup2;&#8308;cm&sup3; (vol)</option> {# {{ elem }}*0.148 x10&#8315;&sup2;&#8308; #}
+                            </ul>
+                        </select>
+                        </td>
+                    {% endif %}
+                {% elif forloop.parentloop.counter == 2 %}  {# For Energy units. Change accordingly for different properties #}
+                    {% if elem == "0.00 " %}
+                        <td> NA </td>
+                    {% else %}
+                        <td>
+                        <input id="total1" class="input_text" type="text" name="total" value="{{ elem }}" readonly="readonly" />
+                        <select id="unit1" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" onchange="updateOrder1({{ elem }});">
+                            <span class="caret"></span>
+                            <ul class="dropdown-menu">
+                                <option value="1">kg m&#8315;&#179;</option>
+                                <option value="0.001">g cm&#8315;&sup3;</option>
+{#                                <option value="27.2114">eV</option>#}
+                            </ul>
+                        </select>
+                        </td>
+                    {% endif %}
+                {% elif forloop.parentloop.counter == 3 %}
+                    {% if elem == "1.00 " %}
+                        <td> NA </td>
+                    {% else %}
+                        <td>{{ elem }}</td>
+                    {% endif %}
+                {% elif forloop.parentloop.counter == 4 %}
+                    {% if elem == "1.00 " %}
+                        <td> NA </td>
+                    {% else %}
+                        <td>{{ elem }}</td>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                <td> {{ elem }} </td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {%  endfor %}
+</table>
+<br>
+<br>
+<div style="margin-left: 10px; width:300px; height:300px; float: left;">
+    <script type = "text/javascript">
+        var jmolApplet0;
+        jmolApplet0 = Jmol.getApplet("jmolApplet0", myInfo1)
+        Jmol.script(jmolApplet0, "background black; load /static/xyz/mol.xyz; cpk 20%; wireframe .15; dots on; rotate;")
+    </script>
+</div>
+&nbsp;
+<div style="margin-right: 30px; float:right; width:380px; height:380px;">
+    <script type="text/javascript">
+        var jmolApplet;
+
+        jmolApplet = Jmol.getApplet("jmolApplet", myInfo2);
+        Jmol.script(jmolApplet, "background white; load /static/xyz/mol.xyz; select *;label %a; set antialiasDisplay true; wireframe .15; rotate; ");
+
+    </script>
+{#        <img src = "/static/png/mol{{mol_id}}._png2" ; alt="2D Image" style="width:100%; height:395px">#}
+</div>
+<div style="margin-top: 400px; margin-left:50px; text-align:left;text-align: -moz-left; font-size: 1.3em">
+    <br>
+    <b>Display Options:</b><br>
+    <form method="post" action=".">
+        <a href="javascript:Jmol.script(jmolApplet0,'set antialiasDisplay false')">Faster</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'set antialiasDisplay true')">Sharper</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'select *;cartoons off;spacefill only')">Spacefill</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'select *;cartoons off;wireframe -0.1')">Wire</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'select *;cartoons off;spacefill 23%;wireframe 0.15')">Ball&amp;Stick</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'select protein or nucleic;cartoons only')">Cartoons</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'set cartoonFancy true')">Fancy</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'set cartoonFancy false')">Not</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'set cartoonFancy false;set hermitelevel 0')">Flat</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'color property atomno')">Color Atomno</a>&nbsp;<br>
+        <a href="javascript:Jmol.script(jmolApplet0,'color cpk')">Color cpk</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'color structure')">Color Structure</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'select *;isosurface vdw')">Isosurface vdw</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'isosurface delete')">Off</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'if ({atomno < 10}.partialcharge == 0){calculate partialcharge};isosurface vdw map mep')">mep</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'isosurface translucent')">Translucent</a>&nbsp;
+        <a href="javascript:Jmol.script(jmolApplet0,'isosurface opaque')">Opaque</a>&nbsp;
+        <br>
+        Rotate <a href="javascript:Jmol.script(jmolApplet0,'rotate')">On</a>
+        <a href="javascript:Jmol.script(jmolApplet0,'rotate false')">Off</a>,
+        Labels <a href="javascript:Jmol.script(jmolApplet0,'if (_fileType == &quot;Pdb&quot;){select *.CA;label %n%r}else{select *;label %a};select *;')">On</a>
+        <a href="javascript:Jmol.script(jmolApplet0,'select *;labels off')">Off</a>
+        </form>
+</div>
+
+<br>
+<br>
+
+<p>
+    <table border="2" align="center">
+        <tr>
+            <td colspan="2">ADDITIONAL INFORMATION</td>
+        </tr>
+        <col width="200">
+        <col width="200">
+{#        <col width="200">#}
+{#        <col width="200">#}
+       {% for info1 in info_list %}
+           {% if forloop.counter == 1 %}
+               <tr>
+                   <td><b>Molecular Weight :</b></td><td>{{ info1 }}</td>
+               </tr>
+           {% elif forloop.counter == 2 %}
+                <tr>
+                    <td><b>Molecular Formula :</b></td><td>{{ info1 }}</td>
+                </tr>
+           {% elif forloop.counter == 3 %}
+                <tr>
+                    <td><b>Number of Atoms :</b></td><td>{{ info1 }}</td>
+                </tr>
+           {% elif forloop.counter == 4 %}
+               <tr>
+                   <td><b>Number of Bonds :</b></td><td>{{ info1 }}</td>
+               </tr>
+           {% endif %}
+       {% endfor %}
+    </table>
+</p>
+</div>
+</article>
+    <br>
+    <br>
+
+
+<footer><font size="3">JSMol@14.25.2  |  MySQL@5.7.11  |  Django@1.10  |   Hachmann_Research_Group@2017  |   Copyright &copy; chembddb.com</font></footer>
+</div>
+</body>
+</html>

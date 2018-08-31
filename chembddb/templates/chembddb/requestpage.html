@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+<title>ChemBDDB-Submit/Upload</title>
+<head>
+<style>
+div.container {
+    height: auto;
+    width: 100%;
+    border: 1px solid gray;
+    margin: -20px 0 0 0;
+
+    /*The  image used for background page*/
+    {#background-image: url("/static/images/body_page.png");#}
+    /*height: 130%;          !*Full height *!*/
+
+    /*Center and scale the image*/
+    {#background-position: bottom;#}
+    {#background-repeat: repeat;#}
+    {#background-size: 50% 50%;#}
+
+    background-color: white;
+    font-family: Garamond;
+    font-size: 20px;
+    {#min-width: 960px;#}
+}
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+{% load static %}
+
+header, footer {
+	padding:1em;
+    margin-left: -15px;
+    margin-right: -15px;
+	color:white;
+	background: linear-gradient(to bottom right, mediumseagreen, mediumseagreen);
+    clear:right;
+    border: 0;
+	text-align:center;
+    font-family: Garamond;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+h1{
+    text-align:left;
+    align-content: center;
+}
+h3 {
+    background-color: black;
+    font-size: smaller;
+    color: white;
+    align-content: end;
+}
+h2 {
+    background-color: black;
+    line-height: 30px;
+}
+.search_box {
+    padding: 40px;
+    background: linear-gradient(to bottom right, blanchedalmond, blanchedalmond);
+    font-size: 20px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.searchTerm {
+    float: center;
+    width: 50%;
+    border: 3px solid #00B4CC;
+    padding: 5px;
+    height: 38px;
+    border-radius: 5px;
+    outline: none;
+    color: #9DBFAF;
+}
+.searchTerm_left {
+    float: left;
+    width: 100%;
+    border: 1px solid #00B4CC;
+    padding: 2px;
+    height: 36px;
+    border-radius: 2px;
+    outline: none;
+    color: #9DBFAF;
+}
+nav {
+	float:left;
+	max-width:120px;
+	margin: 0;
+	padding:1em;
+}
+nav ul {
+	list-style-type: none;
+	padding: 0;
+}
+nav ul a {
+	text-decoration: none;
+}
+article {
+	margin-left: 170px;
+    margin-right: 180px;
+	/*border-left: 1px solid gray;*/
+	padding:1em;
+	overflow:hidden;
+}
+table {
+    font-family: arvo;
+    border-collapse: collapse;
+    width:100%;
+}
+
+tr {
+    text-align: center;
+    height: 40px;
+}
+
+td,th {
+    border: 2px solid black;
+    text-align: center;
+    padding: 20px;
+    width: 180px;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+
+<body topmargin=0 bottommargin=0 leftmargin=0 rightmargin=0>
+<div class="container">
+<header>
+    <h1>
+        <!--<img src="/static/images/Picture7.png" alt="Header" style="width:1000px; height:120px;">-->
+        <text style="text-shadow: 2px 2px 5px black">
+            <font size="8">CHEMBDDB </font><sup><font size="2">1.3</font></sup>
+            {% if user.is_authenticated %}
+                <text style="color:white; font-size:22px; margin-left:550px; word-spacing:10px;"> <strong>Welcome, {{ user.username }}</strong>&nbsp;
+                    <a href="/chembddb" style="color:white; text-decoration:none;">Home</a>&nbsp;
+                    <a href="/chembddb/logout" style="color:white; text-decoration:none;">Logout</a>&nbsp;</text>
+            {% else %}
+                <text style="color:white; font-size:22px;margin-left:550px; word-spacing:10px;">
+                    <a href="/chembddb/login" style="color:white; text-decoration:none;">Login</a>&nbsp;  <!-- &nbsp is used for spacing -->
+                    <a href="/chembddb/register" style="color:white; text-decoration:none;">Register</a>&nbsp;</text>
+            {% endif %}
+        <br>
+            <font size="3" style="position: absolute;"> A Computational Chemistry Database </font><br>
+        </text>
+
+    </h1>
+</header>
+
+<br>
+
+<article>
+<div class="search_box">
+{% block content %}
+{% if user.is_authenticated %}
+    <div class="modal-content">
+        <h4 style="font-size: 1.5em"><b>Enter molecule details</b></h4>
+        <form action="{% url 'chembddb:submitrequest' %}" method="post">
+        {% csrf_token %}
+        {% if error_list %}
+            <font color="red"> Please fix the following errors </font>
+            <ol type="1">
+                {% for error in error_list %}
+                    <li> <font color="red">{{error}}</font> </li>
+                    <br>
+                {% endfor %}
+            </ol>
+        {% endif %}
+        Molecule Name : &nbsp;<input type="text" name="molecule_string" class="searchTerm" placeholder="Enter the Molecule Name">{{ molecule_str }} <!-- here queried text is key and value is query text in the dictionary POST-->
+        <br>
+        <br>
+        SMILES string :  &nbsp;&nbsp;<input type="text" name="smiles_string" class="searchTerm" placeholder="Enter the SMILES string">{{ smiles_str }}
+        <br>
+        <br>
+        <table border="1" align="center">
+        <col width="200" align="center">
+        <col width="200" align="center">
+        <col width="200" align="center">
+        <col width="200" align="center">
+        <tr style="text-align:center">
+            <th> Property </th>
+            <th> Value </th>
+            <th> Unit </th>
+            <th> Publication </th>
+            <th> Method </th>
+            <th> Comments </th>
+        </tr>
+        {% for prop in property_list %}
+            <tr align="center">
+                <td> {{prop.prop}} </td>
+                <td> <textarea name="{{prop.prop}}_val" class="searchTerm_left"></textarea> </td>
+                <td> <textarea name="{{prop.prop}}_unit" class="searchTerm_left"></textarea> </td>
+                <td> <textarea name="{{prop.prop}}_pub" class="searchTerm_left"></textarea> </td>
+                <td> <textarea name="{{prop.prop}}_met" class="searchTerm_left"></textarea> </td>
+                <td> <textarea name="{{prop.prop}}_metcom" class="searchTerm_left" rows="1" cols="10"></textarea> </td>
+            </tr>
+        {% endfor %}
+        </table>
+        <br>
+        <input type="submit" value="Submit Request">
+        </form>
+    </div>
+    <br>
+
+    <p style="font-size:2em; text-align:center; text-align:-moz-center">(OR)</p>
+
+    <div class="modal-content">
+        <font size="5"><b>Upload a .csv dataset file:</b></font>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <br>
+            <p><b>NOTE:</b><br>
+                Make sure the column header of your .csv file matches the following:<br>
+                <strong>Mol_Smiles<br>
+                {% for prop in property_list %}
+                    {{ prop.prop }}<br>
+                {% endfor %}</strong>
+                This step is very important for proper parsing and inserting of data into its corresponding database.
+            </p>
+            <br>
+            <input type="file" name="myfile">
+            <br>
+            <button type="submit">Upload</button>
+        </form>
+        {#{{ uploaded_file_url }}#}
+        {% if uploaded_file_url %}
+            <p>The file has been successfully uploaded.<br>
+                File uploaded at: <a href="../{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+        {% endif %}
+        {#    <p><a href="{% url 'chembddb:index' %}">Return to home</a></p>#}
+    </div>
+{% else %}
+    <div class="modal-content">
+        <h5><strong>Login first before submitting your data</strong></h5>
+    </div>
+{% endif %}
+{% endblock %}
+
+</div>
+</article>
+<br>
+<br>
+</div>
+<footer><font size="3">JSMol@14.25.2  |  MySQL@5.7.11  |  Django@1.10  |   Hachmann_Research_Group@2017   |   Copyright &copy; chembddb.com</font></footer>
+</body>
+

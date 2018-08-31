@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html>
+<title>Login</title>
+<head>
+<style>
+div.container {
+    height: auto;
+    width: 100%;
+    border: 1px solid gray;
+    /*margin: 0 auto;*/
+    margin: -20px 0 0 0;
+
+    /*The  image used for background page*/
+    {#background-image: url("/static/images/body_page.png");#}
+    /*height: 130%;          !*Full height *!*/
+
+    /*Center and scle the image*/
+    {#background-position: bottom;#}
+    {#background-repeat: repeat;#}
+    {#background-size: 50% 50%;#}
+    background: white;
+    font-family: Garamond;
+    font-size: 20px;
+}
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+header, footer {
+	padding:1em;
+    margin-left: -15px;
+    margin-right: -15px;
+    clear:right;
+    border: 0;
+	text-align: center;
+    color: white;
+    font-family: Garamond;
+    background: linear-gradient(to bottom right, mediumseagreen, mediumseagreen);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+h1{
+    text-align:left;
+    align-content: center;
+}
+nav {
+    float:left;
+    max-width:120px;
+    margin: 0;
+    padding:1em;
+}
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+nav ul a {
+    text-decoration: none;
+}
+article {
+    margin-left: 130px;
+    /*border-left: 1px solid gray;*/
+    padding:1em;
+    overflow:hidden;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.login-page {
+    width: 400px;
+    padding: 4% 0 0;
+    {#padding: 40px;#}
+    margin: auto;
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 360px;
+  margin: 0 auto 50px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form input {
+  font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.form button {
+  font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4CAF50;
+  width: 100%;
+  border: 0;
+  {#margin: 15px 0 0;#}
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.form button:hover,.form button:active,.form button:focus {
+  background: #43A047;
+}
+.form .message {
+  margin: 15px 0 0;
+  color: #b3b3b3;
+  font-size: 15px;
+}
+.form .message a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+{#{% extends "base.html" %}#}
+{% block content %}
+<body topmargin=0 bottommargin=0 leftmargin=0 rightmargin=0">
+<div class="container">
+<header>
+    <h1>
+        <text style="text-shadow: 2px 2px 5px black">
+            <font size="9"><a href="/chembddb" style="color:white; text-decoration: none;">CHEMBDDB <sup><font size="2">1.3</font></sup></a>
+                <text style="font-size:25px; margin-left:650px; word-spacing: 30px;">
+                    <a href="/chembddb/" style="color:white; text-decoration:none;">Home</a>&nbsp;&nbsp;
+                    <a href="/chembddb/register" style="color:white; text-decoration:none">Register</a>&nbsp;&nbsp;
+                </text>
+            </font>
+            <br>
+        <font size="3" style="position: absolute; color: white"> A computational chemistry database </font><br>
+        </text>
+{#            <text style="margin-left:190px"> A Computational ChemDatabase </text></text>#}
+{#        <h4 style="margin-left:160px"><text size="3">A database infrastructure for software-assisted exploration of Chemical and Materials space</text></h4>#}
+    </h1>
+</header>
+
+{#{% extends "base.html" %}#}
+<div class="login-page">
+  <div class="form">
+{#    <form class="register-form">#}
+{#      <input type="text" placeholder="name"/>#}
+{#      <input type="password" placeholder="password"/>#}
+{#      <input type="text" placeholder="email address"/>#}
+{#      <button>create</button>#}
+{#      <p class="message">Already registered? <a href="#">Sign In</a></p>#}
+{#    </form>#}
+      {% if form.errors %}
+          <p>Your username and password didn't match. Please try again.</p>
+      {% endif %}
+      <form method="post" action="." class="login-form">
+          {% csrf_token %}
+          <label for="id_username"></label>
+          <input type="text" name="username" placeholder="Username" style="color:black">
+          <label for="id_password"></label>
+          <input type="password" name="password" placeholder="Password" style="color:black">
+          <button type="submit" value="Login">login</button>
+          <input type="hidden" name="next" value="/chembddb/" />
+          <p class="message">Not registered? <a href="/chembddb/register">Create an account</a></p>
+      </form>
+  </div>
+</div>
+
+
+{#{% block title %}Login{% endblock %}#}
+{#{% block head %}Login{% endblock %}#}
+{#{% block content %}#}
+{#   <div class="login-page">#}
+{#   <div class="form">#}
+{#       {% if form.errors %}#}
+{#        <p>Your username and password didn't match. Please try again.</p>#}
+{#       {% endif %}#}
+{#       <form method="post" action="." class="login-page">#}
+{#           {% csrf_token %}#}
+{#           <label for="id_username"></label>#}
+{#                   <input type="text" placeholder="Username" name="username"/>#}
+{##}
+{#           <label for="id_password"></label>#}
+{#                   <input type="password" name="password" placeholder="Password"/>#}
+{#           <button type="submit" value="Login">login</button>#}
+{#           <input type="hidden" name="next" value="/chembddb/" />#}
+{#       </form>#}
+{#       <a href="/chembddb/register">Register</a>#}
+{#   </div>#}
+{#   </div>#}
+
+<footer><font size="3">JSMol@14.25.2  |  MySQL@5.7.11  |  Django@1.10  |   Hachmann_Research_Group@2017   |   Copyright &copy; chembddb.com</font></footer>
+</div>
+</body>
+{% endblock %}
+</html>
