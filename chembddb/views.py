@@ -29,8 +29,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import subprocess
 
-# from StdSuites.Type_Names_Suite import null
-
 @csrf_protect
 def register(request):
     if request.method == 'POST':
@@ -60,14 +58,11 @@ def login(request):
         else:
             return render(request, 'registration/login.html')
 
-
-
 def register_success(request):
     print "Here in Successful registration\n"
     return render(request,
                   'registration/success.html',
                   )
-
 
 def logout_page(request):
     logout(request)
@@ -117,7 +112,6 @@ def reviewRequest(request):
             # Do something
 
     lis = zip(info, name_list)
-
     return render(request, 'chembddb/reviewpage.html', {'lis': lis})
 
 def submitRequest(request):
@@ -183,8 +177,11 @@ def submitRequest(request):
                 err_list.append("Please provide a name to the molecule")
             if (not request.POST['smiles_string']):
                 err_list.append("Please provide SMILES string for the molecule")
-
     return render(request, 'chembddb/requestpage.html', {'property_list': prop_list, 'error_list': err_list})
+
+''' This function is used to extract data from the database for chemical candidate compounds. To extract data, simple and advanced search is involved. 
+Simple search is based on SMILES of a chemical compound. Whereas, the advanced search is based on the combination of desired properties. 
+Also, Django Pagination is performed on the output pages of the search results. '''
 
 def index(request):
     prop_list = MolProp.objects.all()
@@ -202,20 +199,14 @@ def index(request):
         query_text = request.POST['queried_text']
         if request.POST['verified'] == "1":
             # POST is a dictionary which can be accessed through its key
-            # print("queried_text {}".format(query_text))
-
             mol_objects_smi = MolGraph.objects.get(SMILES_str__exact=query_text,verification=True)  # matches exactly
-            # mol_objects_str = MolGraph.objects.get(compound_str__icontains=query_text,verification=True)  # case insensitive, matches substring
         else:
             mol_objects_smi = MolGraph.objects.get(SMILES_str__exact=query_text)  # matches exactly
-            # mol_objects_str = MolGraph.objects.get(compound_str__icontains=query_text)  # case insensitive, matches substring
         mol_objects = Data.objects.filter(mol_graph_id=mol_objects_smi.id)
     elif (request.method == 'POST'):
         print "Its inside this loop"
-        # request.session.modified = True
         prop_from = []
         prop_to = []
-        # prop_unit = map(lambda x: x.unit, prop_list)
         context['propname'] = []
         context['from_field'] = []
         context['to_field'] = []
@@ -225,8 +216,6 @@ def index(request):
             if (prop in request.POST.keys()):
                 prop_from_text_field = prop + "_from_val"
                 prop_to_text_field = prop + "_to_val"
-                # for u in unit_list:
-                # if (u.unit_str in request.POST.keys()):
                 prop_unit_name = prop + "_unit"
                 # This is to modify the unit of Bohr3 to C2m2J-1
                 if (prop_unit_name in request.POST.keys() and request.POST[prop_unit_name] == "coulomb"):
@@ -280,21 +269,15 @@ def index(request):
             context['from_field'].append(prop_from)
             context['to_field'].append(prop_to)
             mol_graph_list = mol_graph_id_set
-
-        # mol_data = MolGraph.objects.filter(id__in=mol_graph_list)
+        
         request.session[key] = pickle.dumps(mol_graph_list)
         mol_objects1 = pickle.loads(request.session[key])
         mol_objects_smiles = Data.objects.all()
         mol_objects = mol_objects_smiles.filter(mol_graph_id__in=mol_objects1, property_id__in=prop_id).select_related('mol_graph').defer('met', 'publication', 'credit')
 
-           # Now get mol_graph_id of every exp data retrieved and store it in a set to avoid duplication
-        '''for mol_graph_id in mol_graph_id_set:
-            mol_objects.append(MolGraph.objects.get(pk=mol_graph_id))'''
-            # the variables stored in context can be used in html files
-
         query_text = request.GET.get('queried_text')
 
-    elif ('page' in request.GET.keys()):  # For other pages when a property is advanced searched
+    elif ('page' in request.GET.keys()):  # Page refers to other pages except Page 1 during adavnced search. 
         mol_objects1 = pickle.loads(request.session[key])
         mol_objects_smiles = Data.objects.all()
         mol_objects = mol_objects_smiles.filter(mol_graph_id__in=mol_objects1, property_id__in=prop_id).select_related('mol_graph').defer('met', 'publication', 'credit')
